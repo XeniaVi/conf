@@ -3,32 +3,33 @@ services:
   confluence:
     image: haxqer/confluence:9.2.1
     container_name: confluence-srv
-    links:
-      - db
+    environment:
+      - TZ=Asia/Shanghai
+    #      - JVM_MINIMUM_MEMORY=1g
+    #      - JVM_MAXIMUM_MEMORY=12g
+    #      - JVM_CODE_CACHE_ARGS='-XX:InitialCodeCacheSize=1g -XX:ReservedCodeCacheSize=8g'
     depends_on:
-      - db
+      - mysql
     ports:
-      - "90:8090"
+      - "8090:8090"
     volumes:
       - home_data:/var/confluence
-        home_data:/var/confluence/logs
     restart: always
     networks:
       - network-bridge
 
-  db:
-    image: "postgres:12"
-    container_name: confluence-db
-    ports:
-      - "5432:5432"
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-confluence
     environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_USER=confluence
-      - POSTGRES_DB=confluence
-      - POSTGRES_PASSWORD=12345
+      - TZ=Asia/Shanghai
+      - MYSQL_DATABASE=confluence
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_USER=confluence
+      - MYSQL_PASSWORD=123123
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_bin', '--transaction-isolation=READ-COMMITTED', '--innodb_log_file_size=256M', '--max_allowed_packet=256M','--log_bin_trust_function_creators=1']
     volumes:
-      - ./home_data/db:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
     restart: always
     networks:
       - network-bridge
