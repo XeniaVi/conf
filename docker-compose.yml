@@ -19,6 +19,8 @@ services:
   db:
     image: "postgres:12"
     container_name: confluence-db
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
