@@ -13,6 +13,8 @@ services:
       - home_data:/var/confluence
         home_data:/var/confluence/logs
     restart: always
+    networks:
+      - network-bridge
 
   db:
     image: "postgres:12"
@@ -26,6 +28,8 @@ services:
     volumes:
       - ./home_data/db:/var/lib/postgresql/data
     restart: always
+    networks:
+      - network-bridge
 
 networks:
   network-bridge:
