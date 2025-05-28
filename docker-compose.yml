@@ -8,7 +8,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8090:8090"
+      - "80:8090"
     volumes:
       - home_data:/var/confluence
         home_data:/var/confluence/logs
