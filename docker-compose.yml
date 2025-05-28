@@ -26,7 +26,7 @@ services:
       - POSTGRES_DB=confluence
       - POSTGRES_PASSWORD=12345
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./home_data/db:/var/lib/postgresql/data
     restart: always
     networks:
       - network-bridge
