@@ -1,0 +1,42 @@
+version: '3.4'
+services:
+  confluence:
+    image: haxqer/confluence:9.2.1
+    container_name: confluence-srv
+    links:
+      - db
+    depends_on:
+      - db
+    ports:
+      - "8090:8090"
+    volumes:
+      - home_data:/var/confluence
+        home_data:/var/confluence/logs
+    restart: always
+    networks:
+      - network-bridge
+
+  db:
+    image: "postgres:12"
+    container_name: confluence-db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=confluence
+      - POSTGRES_DB=confluence
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - network-bridge
+
+networks:
+  network-bridge:
+    driver: bridge
+
+volumes:
+  home_data:
+    external: false
+  mysql_data:
+    external: false
